@@ -1,0 +1,2 @@
+// print is only here as a compiler test 
+print("test");
