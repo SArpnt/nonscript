@@ -1,0 +1,6 @@
+print("Boolean:", true, false);
+print("Number:", 3, 2.4, +7.8, -.4, 8e6, 6e+2, 7e-4, 1e100, -0);
+print("String:", "stuff", "quoted \"stuff\"", "a\n" "b");
+print("Tuple:", (), ("one"), (5, true, foo: "bar")); // single item tuple shouldn't work
+print("Table:", {}, {"a", "b", "c"}, {0: "a", 1: "b", 2: "c"}, {foo: (1, false, "a"), bar: (2, true, "b"), "3": (3, false, "c")});
+print("Function:", (a, b) => a + b, {a,b}=>a+b, args	=>(args[a] +args[b])); // string version of function is stored if converted to string in code

@@ -5,6 +5,7 @@ use std::io::prelude::*;
 use std::path::Path;
 
 fn compile(inString: String) -> String {
+	// TODO: what type does an empty table contain?
 	String::from("output test")
 }
 
