@@ -1,0 +1,11 @@
+use std::str::FromStr;
+grammar;
+
+pub Term: f64 = {
+	//Boolean,
+	Number,
+	"(" <Term> ")",
+};
+
+pub Boolean: bool = r"true|false" => bool::from_str(<>).unwrap();
+pub Number: f64 = r"-?(?:\d+e-?\d+|\d+\.?\d*|\.\d+)" => f64::from_str(<>).unwrap();

@@ -4,14 +4,9 @@ use std::fs;
 use std::io::prelude::*;
 use std::path::Path;
 
-fn compile(inString: String) -> String {
-	// TODO: what type does an empty table contain?
-	String::from("output test")
-}
-
 fn main() {
 	let inDirPath = fs::read_dir("./tests/").unwrap();
-	let outDirPath = fs::read_dir("./testOutputs/").unwrap();
+	let outDirPathBase = "./testOutputs/";
 	let mut compiledFiles = 0;
 
 	for path in inDirPath {
@@ -36,9 +31,9 @@ fn main() {
 			Ok(_) => (),
 		}
 
-		let outputString = compile(inString);
+		let outputString = nonscript::compile(inString);
 
-		let outFilePathStr = format!("./testOutputs/{}.c", inFilePath.file_stem().unwrap().to_str().unwrap());
+		let outFilePathStr = format!("{}/{}.c", outDirPathBase, inFilePath.file_stem().unwrap().to_str().unwrap());
 		let outFilePath = Path::new(&outFilePathStr);
 		let mut outFile = match fs::File::create(&outFilePath) {
 			Err(why) => panic!("couldn't create {}: {}", outFilePath.display(), why),
