@@ -31,6 +31,6 @@ fn testParser() {
 	};
 }
 
-pub fn parse(inString: String) -> String {
-	String::from("temp")
+pub fn parse(_inString: String) -> Result<String, ()> {
+	Err(())
 }

@@ -7,5 +7,6 @@ pub Term: f64 = {
 	"(" <Term> ")",
 };
 
+// TODO: these need to be pub for testing but not for the actual build
 pub Boolean: bool = r"true|false" => bool::from_str(<>).unwrap();
 pub Number: f64 = r"-?(?:\d+e-?\d+|\d+\.?\d*|\.\d+)" => f64::from_str(<>).unwrap();
