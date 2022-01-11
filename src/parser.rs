@@ -3,31 +3,31 @@ lalrpop_mod!(pub syntax);
 #[test]
 fn testParser() {
 	macro_rules! parseTest {
-		($r:ident $t:ident $code:expr;) => {paste!{
-			assert!(syntax::[<$t Parser>]::new().parse($code).[<is_ $r>]());
-		}};
+		($type:ident $code:literal $val:pat $(if $guard:expr)?,) => {
+			assert!(matches!(paste!{syntax::[<$type Parser>]::new().parse($code)}, $val $(if $guard)?));
+		};
 
-		($r:ident $t:ident $e:expr; $($rs:ident $ts:ident $es:expr;)+) => {
-			parseTest! { $r $t $e; }
-			parseTest! { $($rs $ts $es;)+ }
+		($type:ident $code:literal $val:pat $(if $guard:expr)?, $($typeN:ident $codeN:literal $valN:pat $(if $guardN:expr)?,)+) => {
+			parseTest! { $type $code $val $(if $guard)?, }
+			parseTest! { $($typeN $codeN $valN $(if $guardN)?,)+ }
 		};
 	}
 	parseTest! {
 		// garbage
-		err Term "";
-		err Term "\\";
+		Term "" Err(_),
+		Term "\\" Err(_),
 
 		// booleans
-		ok Boolean "true";
-		ok Boolean "false";
+		Boolean "true" Ok(true),
+		Boolean "false" Ok(false),
 
 		// numbers
-		ok Number "1e3";
-		ok Number "-632e-23";
-		err Number "1E3";
-		err Number "1e";
-		err Number "e2";
-		err Number ".";
+		Number "1e3" Ok(x) if x == 1e3,
+		Number "-632e-23" Ok(x) if x == -632e-23,
+		Number "1E3" Err(_),
+		Number "1e" Err(_),
+		Number "e2" Err(_),
+		Number "." Err(_),
 	};
 }
 
