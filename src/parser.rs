@@ -1,4 +1,5 @@
 lalrpop_mod!(pub syntax);
+mod ast;
 
 #[test]
 fn testParser() {

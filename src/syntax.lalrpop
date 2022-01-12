@@ -1,12 +1,28 @@
 use std::str::FromStr;
+use parser::ast;
+
 grammar;
 
-pub Term: f64 = {
-	//Boolean,
-	Number,
-	"(" <Term> ")",
+pub Expression: ast::Expression = {
+	<Literal> => ast::Expression::Literal(<>),
 };
 
+
+
+
+
 // TODO: these need to be pub for testing but not for the actual build
-pub Boolean: bool = r"true|false" => bool::from_str(<>).unwrap();
-pub Number: f64 = r"-?(?:\d+e-?\d+|\d+\.?\d*|\.\d+)" => f64::from_str(<>).unwrap();
+pub Literal: ast::Literal = {
+	<Boolean> => ast::Literal::Boolean(<>),
+	<Number> => ast::Literal::Number(<>),
+}
+pub Boolean: bool = {
+	"true" => true,
+	"false" => false,
+}
+
+let intRegex = r"\d(?:[_\d]*\d)?";
+let decimalRegex = format!(r"{i}\.?(?:{i})?|\.{i}", i = intRegex);
+pub Number: f64 = format!(r"(?:{d})(?:e-?{i})?", d = decimalRegex, i = intRegex) => f64::from_str(<>).unwrap(); // TODO: somehow insert decimal and int
+
+//pub String: &str = r"";
